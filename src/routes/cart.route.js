@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { BSON } from "bson";
 const route=Router();
 
 //import managers
@@ -83,12 +82,16 @@ route.post("/api/carts/:cid/products/:pid", async ( req, res)=>{
 route.delete("/api/carts/:cid/products/:pid", async(req, res)=>{
     try {
         const cid= req.params.cid;
-        const pid= req.params.cid;
-        console.log(cid, pid)
+        const pid= req.params.pid;
         
+        await cartMdb.deleteProductById(cid,pid)
+        res.status(200).json({result: "success", message:"producto eliminado"})
+
     } catch (error) {
         res.status(500).json({result:"error", message: error.message})
     }
 })
+
+
 
 export default route;

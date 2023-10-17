@@ -57,7 +57,7 @@ app.post("/", (req, res)=>{
 
 ///////////////////////////////////  set mongoose conection
 
-mongoose.connect("mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true })
 .then(()=>{
     console.log("conectado a la base de datos")
 })
