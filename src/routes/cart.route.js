@@ -48,7 +48,9 @@ route.get("/api/carts/:cid/", async(req,res)=>{
 
         
          
-        let products=dbCart.products;
+        let products=dbCart.products.map(prod=>prod.toJSON());
+        
+        
         let id= dbCart._id
 
        
