@@ -65,6 +65,10 @@ mongoose.connect("mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu
 
 
 
+
+
+
+
 app.listen(PORT,()=>{
     console.log(`server on port ${PORT}`)
 })

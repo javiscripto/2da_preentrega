@@ -103,4 +103,24 @@ route.get("/api/products/category/:cat", async( req, res)=>{
   }
 })
 
+
+const options = {
+  limit: 10,
+  page: 1
+}
+
+route.get("/all", async(req, res)=>{
+  try {
+    
+    const products = await pmDb.getAll(); 
+    let productRender= products.map(prod=>prod.toJSON())
+    res.render("home", {productRender });
+  } catch (error) {
+    res.status(500).json({ result: "error", message: error.message });
+  }
+})
+
 export default route;
+
+
+

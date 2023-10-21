@@ -46,10 +46,14 @@ route.get("/api/carts/:cid", async(req,res)=>{
         const dbCart= await cartMdb.getById(cid);
         const fsCart= await cartMfs.getById(cid);
 
-        let products = dbCart.products
+        
+         
+        let products=dbCart.products;
+        let id= dbCart._id
 
-        res.status(200).json({result: "success", payload:{dbCart}})
-        res.render("cart", {products})
+       
+        //res.status(200).json({result: "success", payload:{dbCart,fsCart}})
+        res.render("cart", {id, products})
     } catch (error) {
         res.status(500).json({result:"error", message:error.message})
     }
