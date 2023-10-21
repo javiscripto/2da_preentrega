@@ -20,7 +20,7 @@ route.get("/api/products/", async (req, res) => {
     const fsProducts = await pmFs.getAll(limit);
     const dbProducts = await pmDb.getAll(limit);
     //res.json({ result: "success", payload: { fsProducts, dbProducts } });
-    res.render("home", { fsProducts });
+    res.render("home", { dbProducts });
   } catch (error) {
     res.status(500).json({ result: "error", message: error.message });
   }
@@ -34,8 +34,8 @@ route.get("/api/products/:pid", async (req, res) => {
     const fsProduct = await pmFs.getById(pid.pid);
     const dbProduct = await pmDb.getById(pid.pid);
     //res.json({ result: "success", payload: {  dbProduct, fsProduct } });
-    console.log(fsProduct);
-    res.render("detail", { fsProduct });
+   
+    res.render("detail", { dbProduct });
   } catch (error) {
     res.status(500).json({ result: "error", message: error.message });
   }

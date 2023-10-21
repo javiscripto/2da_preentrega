@@ -32,7 +32,7 @@ route.get("/api/carts/", async(req, res)=>{
     try {
         let dbcarts = await cartMdb.getAll();
         let fscarts= await cartMfs.getAll();
-        res.status(200).json({result: "success", payload: {dbcarts,fscarts}})
+        res.status(200).json({result: "success", payload: {dbcarts}})
     } catch (error) {
         console.error("error:",error);
         res.status(500).json({message:"error al cargar los carritos"})
@@ -40,20 +40,16 @@ route.get("/api/carts/", async(req, res)=>{
 })
 
 // get cart by id 
-route.get("/api/carts/:cid/", async(req,res)=>{
+route.get("/api/carts/:cid", async(req,res)=>{
     try {
         const cid=req.params.cid;
         const dbCart= await cartMdb.getById(cid);
         const fsCart= await cartMfs.getById(cid);
 
-        
-         
-        let products=dbCart.products;
-        let id= dbCart._id
+        let products = dbCart.products
 
-       
-        //res.status(200).json({result: "success", payload:{dbCart,fsCart}})
-        res.render("cart", {id, products})
+        res.status(200).json({result: "success", payload:{dbCart}})
+        res.render("cart", {products})
     } catch (error) {
         res.status(500).json({result:"error", message:error.message})
     }
