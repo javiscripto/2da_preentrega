@@ -2,9 +2,10 @@
 
 Producto(s):
 {{#each products}}
-    <p>Artículo: {{item.title}}</p>
+  <div class="product-card">
+    <h3>Artículo: {{item.title}}</h3>
     <p>precio: ${{item.price}} clp</p>
     <p>Cantidad: {{item.quantity}}</p>
+  </div>
+
 {{/each}}
-
-

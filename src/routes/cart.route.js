@@ -31,8 +31,14 @@ route.post("/api/carts/",async(req,res)=>{
 route.get("/api/carts/", async(req, res)=>{
     try {
         let dbcarts = await cartMdb.getAll();
-        let fscarts= await cartMfs.getAll();
-        res.status(200).json({result: "success", payload: {dbcarts}})
+        
+        //let fscarts= await cartMfs.getAll();
+        res.status(200).json(
+            {
+                status: "success",
+                 payload: {dbcarts},
+                 
+                })
     } catch (error) {
         console.error("error:",error);
         res.status(500).json({message:"error al cargar los carritos"})

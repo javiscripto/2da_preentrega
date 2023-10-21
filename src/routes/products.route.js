@@ -104,21 +104,45 @@ route.get("/api/products/category/:cat", async( req, res)=>{
 })
 
 
-const options = {
-  limit: 10,
-  page: 1
-}
 
-route.get("/all", async(req, res)=>{
+
+route.get('/products/', async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual, por defecto la primera.
+  const limit = parseInt(req.query.limit) || 10; // Límite de resultados por página, por defecto 10.
+
   try {
-    
-    const products = await pmDb.getAll(); 
-    let productRender= products.map(prod=>prod.toJSON())
-    res.render("home", {productRender });
+    const options = {
+      page,
+      limit,
+    };
+
+    const result = await productModel.paginate({}, options);
+
+    const hasPreviousPage = page > 1;
+    const hasNextPage = page < result.totalPages;
+    const previousPage = hasPreviousPage ? page - 1 : page;
+    const nextPage = hasNextPage ? page + 1 : page;
+
+    const dbProducts = result.docs.map((product) => product.toObject()); // Convertir a objetos JSON
+
+    res.render('products', {
+      dbProducts,
+      hasPreviousPage,
+      hasNextPage,
+      previousPage,
+      nextPage,
+      currentPage: page,
+      limit,
+    });
   } catch (error) {
-    res.status(500).json({ result: "error", message: error.message });
+    res.status(500).json({ result: 'error', message: error.message });
   }
-})
+});
+
+
+
+
+
 
 export default route;
 
