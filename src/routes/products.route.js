@@ -125,6 +125,7 @@ route.get('/products/', async (req, res) => {
 
     const dbProducts = result.docs.map((product) => product.toObject()); // Convertir a objetos JSON
 
+    const user= req.session.user
     res.render('products', {
       dbProducts,
       hasPreviousPage,
@@ -133,6 +134,7 @@ route.get('/products/', async (req, res) => {
       nextPage,
       currentPage: page,
       limit,
+      user
     });
   } catch (error) {
     res.status(500).json({ result: 'error', message: error.message });

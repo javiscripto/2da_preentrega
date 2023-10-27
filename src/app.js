@@ -1,6 +1,8 @@
 import express,{json}from"express";
 import mongoose from "mongoose";
-
+import session from "express-session";
+import FileStore  from "session-file-store";
+import MongoStore from "connect-mongo";
 //seteo trabajo con rutas
 import {fileURLToPath} from "url";
 import path from "path";
@@ -14,12 +16,25 @@ const __dirname = path.dirname(__filename)
 
 const app= express();
 const PORT = 8080;
-
+const fileStorage = FileStore(session)
 
 
 //middlewares
 app.use(json());
 app.use(express.urlencoded({extended:true}));
+   
+
+        //set session
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl:"mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu.mongodb.net/?retryWrites=true&w=majority",
+        mongoOptions:{useNewUrlParser: true, useUnifiedTopology:true},
+        ttl:150,
+    }),
+    secret:"clave",
+    resave: false,
+    saveUninitialized:true
+}))
 
 
 //set public folder
@@ -28,8 +43,10 @@ app.use(express.static(path.join(__dirname,`public`)));
 //import routes
 import productRoute from "./routes/products.route.js"
 import cartRoute from "./routes/cart.route.js"
-import messagesRoute from "./routes/messages.route.js"
+import messagesRoute from "./routes/messages.route.js";
+import sessionRoute from "./routes/session.route.js"
 
+app.use("/",sessionRoute)
 app.use("/",productRoute)
 app.use("/", cartRoute)
 app.use("/", messagesRoute)
