@@ -33,7 +33,8 @@ app.use(session({
     }),
     secret:"clave",
     resave: false,
-    saveUninitialized:true
+    saveUninitialized:true,
+    
 }))
 
 
