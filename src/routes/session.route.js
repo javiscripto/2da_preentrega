@@ -1,5 +1,20 @@
 import { Router } from "express";
 import UserManager from "../DAO/managers/usersManager.js";
+import bcrypt from "bcrypt";
+
+
+//funcion para hashear la contraseña antes de guardarla en mongo 
+const hashPassword= async(user)=>{
+    try {
+        const hash = await bcrypt.hash(user.password,10);
+        user.password=hash;
+        return user
+    } catch (error) {
+        throw error
+    }
+}
+
+
 
 const route= Router()
 const manager = new UserManager()
@@ -8,6 +23,8 @@ const manager = new UserManager()
 
 
 // register/create new user
+
+
 route.get("/register", ( req, res)=>{
     res.render("register")
 })
@@ -15,7 +32,7 @@ route.get("/register", ( req, res)=>{
 route.post("/register", async( req, res)=>{
     const user=req.body
     await manager.register(user)
-
+    //si se proporciona un usuario, este será almacenado en la base de datos y se redireccionará al endpoint login
     
 
     if(user)res.redirect("/login")
@@ -31,15 +48,17 @@ route.get("/login", (req, res)=>{
 
 route.post("/login", async (req, res) => {
     const credentials = req.body;
+    //las credenciales necesarias seran email y password, se enviarán al manager para validar si existe un usuario en la BD con dichas credenciales 
 
     try {
-        const [existingUser, user] = await manager.login(credentials);
+        const [existingUser, user] = await manager.login(credentials);//el manager devolvera un array con true o false como primera posicion; y el objeto usuario encontrado o null como segunda
         
         if (existingUser) {
-            req.session.user = user;
+            
+            req.session.user = user;//solo si se encuentra, se registra la sesion y se redirecciona a la vista products
             res.redirect("/products");
         } else {
-            res.send(`usuario no registrado <br> <a href="/register">registrarse</a>`);
+            res.send(`usuario no registrado <br> <a href="/register">registrarse</a>`);//en caso contrario, se redirecciona al endpoint /register , para registrarse
         }
     } catch (error) {
         
@@ -54,9 +73,10 @@ route.post("/login", async (req, res) => {
 
 route.get("/logout", (req, res)=>{
     req.session.destroy(err=>{
-        if(!err)res.send("deslogueado")
+        if(!err)res.redirect("/login")
         else res.send({status:`logout error`, body: err})
     })
+
 })
 
 
