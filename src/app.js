@@ -29,7 +29,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu.mongodb.net/?retryWrites=true&w=majority",
         mongoOptions:{useNewUrlParser: true, useUnifiedTopology:true},
-        ttl:150,
+        ttl:120,//si el usuario no presenta actividad durante 120 seg, la sesion lo redirigira al login
     }),
     secret:"clave",
     resave: false,

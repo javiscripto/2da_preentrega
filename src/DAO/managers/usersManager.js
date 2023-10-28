@@ -13,19 +13,19 @@ export default class UserManager{
         }
     }
 
-    login=async(req, res, credentials)=>{
+    login=async( credentials)=>{
         try {
             const { email, password } = credentials;
-            const user = await userModel.findOne({ email, password });
+            const user = await userModel.findOne({ email, password }).lean();
 
             if (user) {
-                console.log(user)
+                return [true, user]
             } else {
-                // Usuario no encontrado
-               console.log("not found")
+                return [false, null]
             }
         } catch (error) {
-            console.error("error en db:", error)
+            console.error("error en db:", error);
+            throw error;
         }
     }
 

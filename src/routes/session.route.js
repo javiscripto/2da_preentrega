@@ -16,9 +16,9 @@ route.post("/register", async( req, res)=>{
     const user=req.body
     await manager.register(user)
 
-    req.session.user=user//
+    
 
-    if(user)res.redirect("/products")
+    if(user)res.redirect("/login")
     
 })
 
@@ -32,7 +32,19 @@ route.get("/login", (req, res)=>{
 route.post("/login", async (req, res) => {
     const credentials = req.body;
 
-     manager.login(req, res, credentials);
+    try {
+        const [existingUser, user] = await manager.login(credentials);
+        
+        if (existingUser) {
+            req.session.user = user;
+            res.redirect("/products");
+        } else {
+            res.send(`usuario no registrado <br> <a href="/register">registrarse</a>`);
+        }
+    } catch (error) {
+        
+        res.status(500).send("Error de base de datos");
+    }
 });
 
 

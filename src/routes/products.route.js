@@ -107,10 +107,12 @@ route.get("/api/products/category/:cat", async( req, res)=>{
 
 
 route.get('/products/', async (req, res) => {
+  
   const page = parseInt(req.query.page) || 1; // Página actual, por defecto la primera.
   const limit = parseInt(req.query.limit) || 10; // Límite de resultados por página, por defecto 10.
 
   try {
+   if(req.session.user){
     const options = {
       page,
       limit,
@@ -136,6 +138,9 @@ route.get('/products/', async (req, res) => {
       limit,
       user
     });
+   }else{
+    res.redirect("/login")
+   }
   } catch (error) {
     res.status(500).json({ result: 'error', message: error.message });
   }
