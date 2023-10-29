@@ -16,7 +16,8 @@ const __dirname = path.dirname(__filename)
 
 const app= express();
 const PORT = 8080;
-const fileStorage = FileStore(session)
+
+//const fileStorage = FileStore(session)
 
 
 //middlewares
@@ -29,7 +30,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://javiermecker94:8GQVknO1JuiAQ920@ecomerce.9sqyqwu.mongodb.net/?retryWrites=true&w=majority",
         mongoOptions:{useNewUrlParser: true, useUnifiedTopology:true},
-        ttl:120,//si el usuario no presenta actividad durante 120 seg, la sesion lo redirigira al login
+        ttl:120,//si el usuario no presenta actividad durante 120 seg, se redirigira al login
     }),
     secret:"clave",
     resave: false,
@@ -40,6 +41,8 @@ app.use(session({
 
 //set public folder
 app.use(express.static(path.join(__dirname,`public`)));
+
+console.log(__dirname,"folder")
 
 //import routes
 import productRoute from "./routes/products.route.js"
@@ -68,10 +71,7 @@ app.get("/", (req, res)=>{
     res.sendFile(path.join(__dirname,`public`,`index.html`))
 })
     //post
-app.post("/", (req, res)=>{
-    let producto = req.body;
-    console.log(producto)
-})
+
 
 ///////////////////////////////////  set mongoose conection
 

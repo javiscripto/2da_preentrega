@@ -53,9 +53,9 @@ route.post("/login", async (req, res) => {
     try {
         const [existingUser, user] = await manager.login(credentials);//el manager devolvera un array con true o false como primera posicion; y el objeto usuario encontrado o null como segunda
         
-        if (existingUser) {
+        if (existingUser) {//solo si se encuentra, se registra la sesion y se redirecciona a la vista products
             
-            req.session.user = user;//solo si se encuentra, se registra la sesion y se redirecciona a la vista products
+            req.session.user = user;
             res.redirect("/products");
         } else {
             res.send(`usuario no registrado <br> <a href="/register">registrarse</a>`);//en caso contrario, se redirecciona al endpoint /register , para registrarse

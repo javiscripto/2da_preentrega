@@ -1,9 +1,17 @@
-<h2>welcome {{user.first_name}} </h2><br>
-<a href="/logout">logout</a>
+
+
+
+
+<div class="products-header">
+ <h2>Bienvenido {{user.first_name}} </h2><br>
+<h6>has accedido como {{user.role}}</h6>
+<a href="/logout">logout</a> 
+</div>
+
 <div>
     {{#each dbProducts}}
 
-    <div>
+    <div >
         <h3>{{title}}</h3>
         <p> price: ${{price}} </p>
         <p> category: {{cat}} </p>
